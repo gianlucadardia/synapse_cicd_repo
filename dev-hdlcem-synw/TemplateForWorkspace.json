@@ -7,10 +7,6 @@
 			"metadata": "Workspace name",
 			"defaultValue": "dev-hdlcem-synw"
 		},
-		"adlsgen2connection_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'adlsgen2connection'"
-		},
 		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'dev-hdlcem-synw-WorkspaceDefaultSqlServer'"
@@ -191,11 +187,7 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('adlsgen2connection_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('adlsgen2connection_accountKey')]"
-					}
+					"url": "[parameters('adlsgen2connection_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",

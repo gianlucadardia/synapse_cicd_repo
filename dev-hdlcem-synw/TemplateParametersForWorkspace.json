@@ -5,9 +5,6 @@
 		"workspaceName": {
 			"value": "dev-hdlcem-synw"
 		},
-		"adlsgen2connection_accountKey": {
-			"value": ""
-		},
 		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
