@@ -11,9 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adlsgen2connection'"
 		},
+		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'dev-hdlcem-synw-WorkspaceDefaultSqlServer'"
+		},
 		"adlsgen2connection_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://devhdlcemdls.dfs.core.windows.net/"
+		},
+		"dev-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://devhdlcemdls.dfs.core.windows.net"
 		}
 	},
 	"variables": {
@@ -76,14 +84,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "SourceDataset_38x",
+								"referenceName": "SourceDataset",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DestinationDataset_38x",
+								"referenceName": "DestinationDataset",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -97,12 +105,12 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/datasets/SourceDataset_38x')]",
-				"[concat(variables('workspaceId'), '/datasets/DestinationDataset_38x')]"
+				"[concat(variables('workspaceId'), '/datasets/SourceDataset')]",
+				"[concat(variables('workspaceId'), '/datasets/DestinationDataset')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/DestinationDataset_38x')]",
+			"name": "[concat(parameters('workspaceName'), '/DestinationDataset')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -127,7 +135,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SourceDataset_38x')]",
+			"name": "[concat(parameters('workspaceName'), '/SourceDataset')]",
 			"type": "Microsoft.Synapse/workspaces/datasets",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -173,6 +181,29 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/linkedServices/adlsgen2connection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/adlsgen2connection')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('adlsgen2connection_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('adlsgen2connection_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
 		},
 		{
@@ -266,29 +297,6 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/adlsgen2connection')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('adlsgen2connection_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('adlsgen2connection_accountKey')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
-			]
 		}
 	]
 }
