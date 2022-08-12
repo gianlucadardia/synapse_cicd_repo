@@ -35,7 +35,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy_38x",
+						"name": "ConvertData",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
