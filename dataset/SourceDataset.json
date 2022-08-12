@@ -1,5 +1,5 @@
 {
-	"name": "SourceDataset_38x",
+	"name": "SourceDataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsgen2connection",
