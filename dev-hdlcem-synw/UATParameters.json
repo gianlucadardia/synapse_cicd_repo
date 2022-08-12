@@ -5,10 +5,10 @@
 		"workspaceName": {
 			"value": "uat-hdlcem-synw"
 		},
-		"uat-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
+		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
-		"uat-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
+		"dev-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://uathdlcemdls.dfs.core.windows.net"
 		}
 	}
