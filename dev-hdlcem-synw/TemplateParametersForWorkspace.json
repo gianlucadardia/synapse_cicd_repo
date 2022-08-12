@@ -5,14 +5,8 @@
 		"workspaceName": {
 			"value": "dev-hdlcem-synw"
 		},
-		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
-			"value": ""
-		},
 		"adlsgen2connection_accountKey": {
 			"value": ""
-		},
-		"dev-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
-			"value": "https://devhdlcemdls.dfs.core.windows.net"
 		},
 		"adlsgen2connection_properties_typeProperties_url": {
 			"value": "https://devhdlcemdls.dfs.core.windows.net/"

@@ -7,17 +7,9 @@
 			"metadata": "Workspace name",
 			"defaultValue": "dev-hdlcem-synw"
 		},
-		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'dev-hdlcem-synw-WorkspaceDefaultSqlServer'"
-		},
 		"adlsgen2connection_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'adlsgen2connection'"
-		},
-		"dev-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://devhdlcemdls.dfs.core.windows.net"
 		},
 		"adlsgen2connection_properties_typeProperties_url": {
 			"type": "string",
