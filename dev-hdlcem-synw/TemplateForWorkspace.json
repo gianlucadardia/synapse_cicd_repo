@@ -11,9 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'dev-hdlcem-synw-WorkspaceDefaultSqlServer'"
 		},
+		"adlsgen2connection_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'adlsgen2connection'"
+		},
 		"dev-hdlcem-synw-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://devhdlcemdls.dfs.core.windows.net"
+		},
+		"adlsgen2connection_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://devhdlcemdls.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -107,7 +115,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "dev-hdlcem-synw-WorkspaceDefaultStorage",
+					"referenceName": "adlsgen2connection",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -123,7 +131,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/dev-hdlcem-synw-WorkspaceDefaultStorage')]"
+				"[concat(variables('workspaceId'), '/linkedServices/adlsgen2connection')]"
 			]
 		},
 		{
@@ -132,7 +140,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "dev-hdlcem-synw-WorkspaceDefaultStorage",
+					"referenceName": "adlsgen2connection",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -172,7 +180,7 @@
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/linkedServices/dev-hdlcem-synw-WorkspaceDefaultStorage')]"
+				"[concat(variables('workspaceId'), '/linkedServices/adlsgen2connection')]"
 			]
 		},
 		{
@@ -266,6 +274,29 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/adlsgen2connection')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('adlsgen2connection_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('adlsgen2connection_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
 		}
 	]
 }
