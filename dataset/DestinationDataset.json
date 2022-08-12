@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_38x",
+	"name": "DestinationDataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "adlsgen2connection",
