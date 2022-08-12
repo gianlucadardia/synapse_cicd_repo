@@ -2,7 +2,7 @@
 	"name": "SourceDataset_38x",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "dev-hdlcem-synw-WorkspaceDefaultStorage",
+			"referenceName": "adlsgen2connection",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
