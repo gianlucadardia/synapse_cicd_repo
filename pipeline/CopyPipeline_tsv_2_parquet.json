@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ConvertData",
+				"name": "ConvertCsv2Parquet",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
