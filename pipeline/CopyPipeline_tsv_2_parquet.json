@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ConvertCsvData",
+				"name": "ConvertCsvDataMy",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
