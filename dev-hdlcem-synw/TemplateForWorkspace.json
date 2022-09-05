@@ -31,7 +31,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "ConvertCsv2Parquet",
+						"name": "ConvertCsvData",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
