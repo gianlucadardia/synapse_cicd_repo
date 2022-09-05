@@ -344,7 +344,7 @@
 				"nbformat": 4,
 				"nbformat_minor": 2,
 				"bigDataPool": {
-					"referenceName": "devsparkpool",
+					"referenceName": "basicsparkpool",
 					"type": "BigDataPoolReference"
 				},
 				"sessionProperties": {
@@ -357,7 +357,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "ceab751e-daad-4899-ae66-da7e4b878fab"
+						"spark.autotune.trackingId": "61c965ea-e026-4b35-ba62-5e730e2b3c01"
 					}
 				},
 				"metadata": {
@@ -371,10 +371,10 @@
 						"name": "python"
 					},
 					"a365ComputeOptions": {
-						"id": "/subscriptions/e50784e7-b1b9-47a4-b098-654662e73f01/resourceGroups/dev-syncicd-hdlcem-rg/providers/Microsoft.Synapse/workspaces/dev-hdlcem-synw/bigDataPools/devsparkpool",
-						"name": "devsparkpool",
+						"id": "/subscriptions/e50784e7-b1b9-47a4-b098-654662e73f01/resourceGroups/dev-syncicd-hdlcem-rg/providers/Microsoft.Synapse/workspaces/dev-hdlcem-synw/bigDataPools/basicsparkpool",
+						"name": "basicsparkpool",
 						"type": "Spark",
-						"endpoint": "https://dev-hdlcem-synw.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/devsparkpool",
+						"endpoint": "https://dev-hdlcem-synw.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/basicsparkpool",
 						"auth": {
 							"type": "AAD",
 							"authResource": "https://dev.azuresynapse.net"
@@ -382,8 +382,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 3,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -422,9 +421,50 @@
 			"type": "Microsoft.Synapse/workspaces/bigDataPools",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Small",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [],
+			"location": "westeurope"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/basicsparkpool')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"autoPause": {
+					"enabled": true,
+					"delayInMinutes": 15
+				},
+				"autoScale": {
+					"enabled": false,
+					"maxNodeCount": 10,
+					"minNodeCount": 3
+				},
+				"nodeCount": 3,
+				"nodeSize": "Small",
+				"nodeSizeFamily": "MemoryOptimized",
+				"sparkVersion": "3.2",
+				"isComputeIsolationEnabled": false,
+				"sessionLevelPackagesEnabled": false,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "westeurope"
 		}
 	]
 }
