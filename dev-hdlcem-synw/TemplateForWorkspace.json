@@ -31,7 +31,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "ConvertData",
+						"name": "ConvertCsv2Parquet",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -271,12 +271,15 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Exercise 1A - Read with SQL on-demand')]",
+			"name": "[concat(parameters('workspaceName'), '/CleanUp External')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"folder": {
+					"name": "External_DB"
+				},
 				"content": {
-					"query": "SELECT\n    SalesKey,\n    CityKey,\n    CustomerKey,\n    BillToCustomerKey,\n    StockItemKey \nFROM\n    OPENROWSET(\n        BULK 'https://synapaseinadayadslg2.dfs.core.windows.net/wwi/factsale-csv/2012/Q1/InvoiceDateKey=2012-01-01/part-00007-44b9df45-8696-4254-a36f-75c871172595.c000.csv',\n \t\tFORMAT = 'CSV', \n\t\tFIELDTERMINATOR ='|', \n        FIELDQUOTE = '',\n\t\tFIRSTROW = 2\n    ) \nWITH \n    (\n        SalesKey BIGINT,\n        CityKey INT,\n        CustomerKey INT,\n        BillToCustomerKey INT,\n        StockItemKey INT,\n        DeliveryDateKey DATE,\n        SalesPersonKey INT,\n        WWIInvoiceID INT,\n        Description VARCHAR(200),\n        Package VARCHAR(10),\n        Quantity INT,\n        UnitPrice DECIMAL(6,2),\n        TaxRate DECIMAL(6,2),\n        TotalExcludingTax DECIMAL(6,2),\n        TaxAmount DECIMAL(6,2),\n        Profit DECIMAL(6,2),\n        TotalIncludingTax DECIMAL(6,2),\n        TotalDryItems INT,\n        TotalChillerItems INT,\n        LineageKey INT\n    ) as S",
+					"query": "DROP DATABASE sample_external_db\n\nUSE sample_external_db\n\n------------------------------------------------------------------------------------------\n--      Part 1 - Cleanup script\n--      This part removes objects from sample database\n------------------------------------------------------------------------------------------\nDROP VIEW IF EXISTS parquet.YellowTaxi\nGO\nDROP VIEW IF EXISTS json.Books\nGO\nDROP VIEW IF EXISTS csv.YellowTaxi\nGO\nIF (EXISTS(SELECT * FROM sys.external_tables WHERE name = 'Population')) BEGIN\n    DROP EXTERNAL TABLE csv.Population\nEND\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithoutHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithoutHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'NativeParquet')) BEGIN\n    DROP EXTERNAL FILE FORMAT NativeParquet\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'DeltaLakeFormat')) BEGIN\n    DROP EXTERNAL FILE FORMAT DeltaLakeFormat\nEND\nGO\nDROP SCHEMA IF EXISTS parquet;\nGO\nDROP SCHEMA IF EXISTS csv;\nGO\nDROP SCHEMA IF EXISTS json;\nGO\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlOnDemandDemo')) BEGIN\n    DROP EXTERNAL DATA SOURCE SqlOnDemandDemo\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'DeltaLakeStorage')) BEGIN\n    DROP EXTERNAL DATA SOURCE DeltaLakeStorage\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'AzureOpenData')) BEGIN\n    DROP EXTERNAL DATA SOURCE AzureOpenData\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'YellowTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE YellowTaxi\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'GreenTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE GreenTaxi\nEND\n\nIF NOT EXISTS (SELECT * FROM sys.symmetric_keys) BEGIN\n    declare @pasword nvarchar(400) = CAST(newid() as VARCHAR(400));\n    EXEC('CREATE MASTER KEY ENCRYPTION BY PASSWORD = ''' + @pasword + '''')\nEND\n\nIF EXISTS\n   (SELECT * FROM sys.credentials\n   WHERE name = 'https://sqlondemandstorage.blob.core.windows.net')\n   DROP CREDENTIAL [https://sqlondemandstorage.blob.core.windows.net]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'sqlondemand')\n   DROP DATABASE SCOPED CREDENTIAL [sqlondemand]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'WorkspaceIdentity')\n   DROP DATABASE SCOPED CREDENTIAL [WorkspaceIdentity]\nGO\n\n\n",
 					"metadata": {
 						"language": "sql"
 					},
@@ -314,15 +317,12 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/CleanUp External')]",
+			"name": "[concat(parameters('workspaceName'), '/Exercise 1A - Read with SQL on-demand')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"folder": {
-					"name": "External_DB"
-				},
 				"content": {
-					"query": "DROP DATABASE sample_external_db\n\nUSE sample_external_db\n\n------------------------------------------------------------------------------------------\n--      Part 1 - Cleanup script\n--      This part removes objects from sample database\n------------------------------------------------------------------------------------------\nDROP VIEW IF EXISTS parquet.YellowTaxi\nGO\nDROP VIEW IF EXISTS json.Books\nGO\nDROP VIEW IF EXISTS csv.YellowTaxi\nGO\nIF (EXISTS(SELECT * FROM sys.external_tables WHERE name = 'Population')) BEGIN\n    DROP EXTERNAL TABLE csv.Population\nEND\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'QuotedCsvWithoutHeader')) BEGIN\n    DROP EXTERNAL FILE FORMAT QuotedCsvWithoutHeader\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'NativeParquet')) BEGIN\n    DROP EXTERNAL FILE FORMAT NativeParquet\nEND\nGO\nIF (EXISTS(SELECT * FROM sys.external_file_formats WHERE name = 'DeltaLakeFormat')) BEGIN\n    DROP EXTERNAL FILE FORMAT DeltaLakeFormat\nEND\nGO\nDROP SCHEMA IF EXISTS parquet;\nGO\nDROP SCHEMA IF EXISTS csv;\nGO\nDROP SCHEMA IF EXISTS json;\nGO\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'SqlOnDemandDemo')) BEGIN\n    DROP EXTERNAL DATA SOURCE SqlOnDemandDemo\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'DeltaLakeStorage')) BEGIN\n    DROP EXTERNAL DATA SOURCE DeltaLakeStorage\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'AzureOpenData')) BEGIN\n    DROP EXTERNAL DATA SOURCE AzureOpenData\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'YellowTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE YellowTaxi\nEND\n\nIF (EXISTS(SELECT * FROM sys.external_data_sources WHERE name = 'GreenTaxi')) BEGIN\n    DROP EXTERNAL DATA SOURCE GreenTaxi\nEND\n\nIF NOT EXISTS (SELECT * FROM sys.symmetric_keys) BEGIN\n    declare @pasword nvarchar(400) = CAST(newid() as VARCHAR(400));\n    EXEC('CREATE MASTER KEY ENCRYPTION BY PASSWORD = ''' + @pasword + '''')\nEND\n\nIF EXISTS\n   (SELECT * FROM sys.credentials\n   WHERE name = 'https://sqlondemandstorage.blob.core.windows.net')\n   DROP CREDENTIAL [https://sqlondemandstorage.blob.core.windows.net]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'sqlondemand')\n   DROP DATABASE SCOPED CREDENTIAL [sqlondemand]\nGO\n\nIF EXISTS\n   (SELECT * FROM sys.database_scoped_credentials\n   WHERE name = 'WorkspaceIdentity')\n   DROP DATABASE SCOPED CREDENTIAL [WorkspaceIdentity]\nGO\n\n\n",
+					"query": "SELECT\n    SalesKey,\n    CityKey,\n    CustomerKey,\n    BillToCustomerKey,\n    StockItemKey \nFROM\n    OPENROWSET(\n        BULK 'https://synapaseinadayadslg2.dfs.core.windows.net/wwi/factsale-csv/2012/Q1/InvoiceDateKey=2012-01-01/part-00007-44b9df45-8696-4254-a36f-75c871172595.c000.csv',\n \t\tFORMAT = 'CSV', \n\t\tFIELDTERMINATOR ='|', \n        FIELDQUOTE = '',\n\t\tFIRSTROW = 2\n    ) \nWITH \n    (\n        SalesKey BIGINT,\n        CityKey INT,\n        CustomerKey INT,\n        BillToCustomerKey INT,\n        StockItemKey INT,\n        DeliveryDateKey DATE,\n        SalesPersonKey INT,\n        WWIInvoiceID INT,\n        Description VARCHAR(200),\n        Package VARCHAR(10),\n        Quantity INT,\n        UnitPrice DECIMAL(6,2),\n        TaxRate DECIMAL(6,2),\n        TotalExcludingTax DECIMAL(6,2),\n        TaxAmount DECIMAL(6,2),\n        Profit DECIMAL(6,2),\n        TotalIncludingTax DECIMAL(6,2),\n        TotalDryItems INT,\n        TotalChillerItems INT,\n        LineageKey INT\n    ) as S",
 					"metadata": {
 						"language": "sql"
 					},
