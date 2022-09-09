@@ -322,7 +322,7 @@
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "SELECT\n    SalesKey,\n    CityKey,\n    CustomerKey,\n    BillToCustomerKey,\n    StockItemKey \nFROM\n    OPENROWSET(\n        BULK 'https://synapaseinadayadslg2.dfs.core.windows.net/wwi/factsale-csv/2012/Q1/InvoiceDateKey=2012-01-01/part-00007-44b9df45-8696-4254-a36f-75c871172595.c000.csv',\n \t\tFORMAT = 'CSV', \n\t\tFIELDTERMINATOR ='|', \n        FIELDQUOTE = '',\n\t\tFIRSTROW = 2\n    ) \nWITH \n    (\n        SalesKey BIGINT,\n        CityKey INT,\n        CustomerKey INT,\n        BillToCustomerKey INT,\n        StockItemKey INT,\n        DeliveryDateKey DATE,\n        SalesPersonKey INT,\n        WWIInvoiceID INT,\n        Description VARCHAR(200),\n        Package VARCHAR(10),\n        Quantity INT,\n        UnitPrice DECIMAL(6,2),\n        TaxRate DECIMAL(6,2),\n        TotalExcludingTax DECIMAL(6,2),\n        TaxAmount DECIMAL(6,2),\n        Profit DECIMAL(6,2),\n        TotalIncludingTax DECIMAL(6,2),\n        TotalDryItems INT,\n        TotalChillerItems INT,\n        LineageKey INT\n    ) as S",
+					"query": "SELECT\n    SalesKey, \n    CityKey,\n    CustomerKey,\n    BillToCustomerKey,\n    StockItemKey \nFROM\n    OPENROWSET(\n        BULK 'https://synapaseinadayadslg2.dfs.core.windows.net/wwi/factsale-csv/2012/Q1/InvoiceDateKey=2012-01-01/part-00007-44b9df45-8696-4254-a36f-75c871172595.c000.csv',\n \t\tFORMAT = 'CSV', \n\t\tFIELDTERMINATOR ='|', \n        FIELDQUOTE = '',\n\t\tFIRSTROW = 2\n    ) \nWITH \n    (\n        SalesKey BIGINT,\n        CityKey INT,\n        CustomerKey INT,\n        BillToCustomerKey INT,\n        StockItemKey INT,\n        DeliveryDateKey DATE,\n        SalesPersonKey INT,\n        WWIInvoiceID INT,\n        Description VARCHAR(200),\n        Package VARCHAR(10),\n        Quantity INT,\n        UnitPrice DECIMAL(6,2),\n        TaxRate DECIMAL(6,2),\n        TotalExcludingTax DECIMAL(6,2),\n        TaxAmount DECIMAL(6,2),\n        Profit DECIMAL(6,2),\n        TotalIncludingTax DECIMAL(6,2),\n        TotalDryItems INT,\n        TotalChillerItems INT,\n        LineageKey INT\n    ) as S",
 					"metadata": {
 						"language": "sql"
 					},
@@ -415,31 +415,6 @@
 				]
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/devsparkpool')]",
-			"type": "Microsoft.Synapse/workspaces/bigDataPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"autoPause": {
-					"enabled": true,
-					"delayInMinutes": 15
-				},
-				"autoScale": {
-					"enabled": false,
-					"maxNodeCount": 10,
-					"minNodeCount": 3
-				},
-				"nodeCount": 3,
-				"nodeSize": "Small",
-				"nodeSizeFamily": "MemoryOptimized",
-				"sparkVersion": "3.2",
-				"isComputeIsolationEnabled": false,
-				"sessionLevelPackagesEnabled": false,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "westeurope"
 		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/basicsparkpool')]",
