@@ -1,6 +1,7 @@
 {
 	"name": "CopyPipeline_tsv_2_parquet",
 	"properties": {
+		"description": "New Description",
 		"activities": [
 			{
 				"name": "ConvertCsvDataMy",
