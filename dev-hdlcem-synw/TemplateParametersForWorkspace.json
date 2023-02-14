@@ -6,7 +6,7 @@
 			"value": "dev-hdlcem-synw"
 		},
 		"dev-hdlcem-synw-WorkspaceDefaultSqlServer_connectionString": {
-			"value": ""
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:dev-hdlcem-synw.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"adlsgen2connection_properties_typeProperties_url": {
 			"value": "https://devhdlcemdls.dfs.core.windows.net/"
